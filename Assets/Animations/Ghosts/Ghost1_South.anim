@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PacStudentSouth
+  m_Name: Ghost1_South
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,9 +21,9 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -7617771259223392206, guid: d0b927759ec5f4f4c9e5fa7ff43c92f9, type: 3}
+      value: {fileID: 1420422204118189659, guid: 911dd9c4bc1d349758de6958f53409cc, type: 3}
     - time: 0.5
-      value: {fileID: -5009794028431520408, guid: d0b927759ec5f4f4c9e5fa7ff43c92f9, type: 3}
+      value: {fileID: 7748238339429501056, guid: 911dd9c4bc1d349758de6958f53409cc, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -46,8 +46,8 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: -7617771259223392206, guid: d0b927759ec5f4f4c9e5fa7ff43c92f9, type: 3}
-    - {fileID: -5009794028431520408, guid: d0b927759ec5f4f4c9e5fa7ff43c92f9, type: 3}
+    - {fileID: 1420422204118189659, guid: 911dd9c4bc1d349758de6958f53409cc, type: 3}
+    - {fileID: 7748238339429501056, guid: 911dd9c4bc1d349758de6958f53409cc, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
