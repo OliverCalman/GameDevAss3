@@ -2,28 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tweener : MonoBehaviour
-{
+public class Tweener : MonoBehaviour {
     private Tween activeTween;
-    // Start is called before the first frame update
-    void Start()
+    void Start() 
     {
 
     }
 
-    // Update is called once per frame
-    void Update()
+    void Update() 
     {
-            if (Vector3.Distance(activeTween.Target.position, activeTween.EndPos) > 0.1f) {
-                float timeFraction = (Time.time - activeTween.StartTime) / activeTween.Duration;
-                timeFraction = Mathf.Pow(timeFraction, 3);
-                activeTween.Target.position = Vector3.Lerp(activeTween.StartPos,
-                                                          activeTween.EndPos,
-                                                           timeFraction);                
-            } else {
-                activeTween.Target.position = activeTween.EndPos;
+        Debug.Log(activeTween);
+        if (activeTween != null)
+        {
+            float distance = Vector3.Distance(activeTween.Target.position, activeTween.EndPos);
+
+            if (distance > 0.1f)
+            {
+                activeTween.Target.transform.position = Vector3.Lerp(activeTween.StartPos, activeTween.EndPos, (Time.time - activeTween.StartTime) / activeTween.Duration); 
+            }
+            else 
+            {
+                activeTween.Target.transform.position = activeTween.EndPos;
                 activeTween = null;
             }
-
+        }
     }
+
+    public void AddTween(Transform target, Vector3 startPos, Vector3 endPos, float duration)
+    {
+        activeTween = new Tween(target, startPos, endPos, Time.time, duration);
+    }
+
 }
