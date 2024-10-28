@@ -10,6 +10,7 @@ public class PacStudentController : MonoBehaviour
     [SerializeField] private GameObject pacStudent;
     private Tweener tweener;
     private Animator animator;
+    private Vector3 startPosition = new Vector3(-3.5f,6.5f,0.0f);
     private KeyCode currentInput;
     private KeyCode lastInput;
     private Vector3 movementTarget;
@@ -18,6 +19,7 @@ public class PacStudentController : MonoBehaviour
     {
         tweener = GetComponent<Tweener>();
         animator = GetComponent<Animator>();
+        pacStudent.transform.position = startPosition;
     }
 
     // Update is called once per frame
@@ -32,34 +34,34 @@ public class PacStudentController : MonoBehaviour
             if(Input.GetKeyDown(KeyCode.D))
                 lastInput = KeyCode.D;
             
-            MovementHandler(); 
-
+            if (lastInput != KeyCode.None)
+            {
+                MovementHandler();
+            }
     }
 
     public void MovementHandler()
     {
         Debug.Log(lastInput);
-
-                if (lastInput == KeyCode.D)
-                {
-                    movementTarget = pacStudent.transform.position + Vector3.right;
-                    animator.Play("Right");
-                }
-                if (lastInput == KeyCode.S)
-                {
-                    movementTarget = pacStudent.transform.position + Vector3.down;
-                    animator.Play("Down");
-                }
-                if (lastInput == KeyCode.A)
-                {
-                     movementTarget = pacStudent.transform.position + Vector3.left;
-                    animator.Play("Left");
-                }
-                if (lastInput == KeyCode.W)
-                {
-                        movementTarget = pacStudent.transform.position + Vector3.up;
-                    animator.Play("Up");
-                }
+        switch(lastInput)
+        {
+            case KeyCode.W:
+                movementTarget = pacStudent.transform.position + Vector3.up;
+                animator.Play("Up");
+                break;
+            case KeyCode.A:
+                movementTarget = pacStudent.transform.position + Vector3.left;
+                animator.Play("Left");
+                break;
+            case KeyCode.S:
+                movementTarget = pacStudent.transform.position + Vector3.down;
+                animator.Play("Down");
+                break;
+            case KeyCode.D:
+                movementTarget = pacStudent.transform.position + Vector3.right;
+                animator.Play("Right");
+                break;
+        }
 
         tweener.AddTween(pacStudent.transform, pacStudent.transform.position, movementTarget, 0.5f);                                
     }
