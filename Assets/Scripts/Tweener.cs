@@ -11,7 +11,6 @@ public class Tweener : MonoBehaviour {
 
     void Update() 
     {
-        Debug.Log(activeTween);
         if (activeTween != null)
         {
             float distance = Vector3.Distance(activeTween.Target.position, activeTween.EndPos);

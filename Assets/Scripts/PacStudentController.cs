@@ -4,21 +4,26 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class PacStudentController : MonoBehaviour
 {
     [SerializeField] private GameObject pacStudent;
     private Tweener tweener;
     private Animator animator;
+    private Tilemap tilemap;
     private Vector3 startPosition = new Vector3(-3.5f,6.5f,0.0f);
     private KeyCode currentInput;
     private KeyCode lastInput;
     private Vector3 movementTarget;
+    private String animDirection;
     // Start is called before the first frame update
     void Start()
     {
         tweener = GetComponent<Tweener>();
         animator = GetComponent<Animator>();
+        tilemap = GameObject.FindWithTag("Tilemap").GetComponent<Tilemap>();
         pacStudent.transform.position = startPosition;
     }
 
@@ -44,33 +49,49 @@ public class PacStudentController : MonoBehaviour
     public void MovementHandler()
     {
         Debug.Log(lastInput);
+
         switch(lastInput)
         {
             case KeyCode.W:
                 movementTarget = pacStudent.transform.position + Vector3.up;
-                animator.Play("Up");
+                animDirection = "Up";
                 break;
             case KeyCode.A:
                 movementTarget = pacStudent.transform.position + Vector3.left;
-                animator.Play("Left");
+                animDirection = "Left";
                 break;
             case KeyCode.S:
                 movementTarget = pacStudent.transform.position + Vector3.down;
-                animator.Play("Down");
+                animDirection = "Down";
                 break;
             case KeyCode.D:
                 movementTarget = pacStudent.transform.position + Vector3.right;
-                animator.Play("Right");
+                animDirection = "Right";
                 break;
         }
 
-        tweener.AddTween(pacStudent.transform, pacStudent.transform.position, movementTarget, 0.5f);                                
+        if (CollisionDetector(movementTarget) == false)
+        {
+            tweener.AddTween(pacStudent.transform, pacStudent.transform.position, movementTarget, 0.5f);  
+            animator.Play(animDirection);
+        }
+                                
     }
 
-    public bool CollisionDetector(KeyCode input)
+    public bool CollisionDetector(Vector3 movementTarget)
     {
+        
+        Tile adjacentTile = tilemap.GetTile<Tile>(tilemap.WorldToCell(movementTarget));
         //if colliding with tile return true
-
-        //else return false
+        if (adjacentTile != null)
+        {
+            Debug.Log("collision");
+            return true;
+        }
+        else
+        {
+            currentInput = lastInput;
+            return false;
+        }
     }
 } 
