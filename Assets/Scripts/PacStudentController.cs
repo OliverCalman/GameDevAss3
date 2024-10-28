@@ -66,4 +66,11 @@ public class PacStudentController : MonoBehaviour
 
         tweener.AddTween(pacStudent.transform, pacStudent.transform.position, movementTarget, 0.5f);                                
     }
+
+    public bool CollisionDetector(KeyCode input)
+    {
+        //if colliding with tile return true
+
+        //else return false
+    }
 } 
