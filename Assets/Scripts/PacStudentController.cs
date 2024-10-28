@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,8 +10,9 @@ public class PacStudentController : MonoBehaviour
     [SerializeField] private GameObject pacStudent;
     private Tweener tweener;
     private Animator animator;
-    KeyCode currentInput;
-    KeyCode lastInput;
+    private KeyCode currentInput;
+    private KeyCode lastInput;
+    private Vector3 movementTarget;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,39 +31,36 @@ public class PacStudentController : MonoBehaviour
                 lastInput = KeyCode.S;
             if(Input.GetKeyDown(KeyCode.D))
                 lastInput = KeyCode.D;
-
-        Debug.Log(lastInput);   
-        MovementHandler();
+            
+            MovementHandler(); 
 
     }
 
     public void MovementHandler()
     {
-        Vector3 topLeft = new Vector3(-3.2f, 5.98f, 0.0f);
-        Vector3 topRight = new Vector3(1.83f, 5.98f, 0.0f);
-        Vector3 bottomRight = new Vector3(1.83f, 2.0f, 0.0f);
-        Vector3 bottomLeft = new Vector3(-3.2f, 2.0f, 0.0f);
+        Debug.Log(lastInput);
 
                 if (lastInput == KeyCode.D)
                 {
-                    tweener.AddTween(pacStudent.transform, pacStudent.transform.position, topRight, 1.5f);
+                    movementTarget = pacStudent.transform.position + Vector3.right;
                     animator.Play("Right");
                 }
                 if (lastInput == KeyCode.S)
                 {
-                    tweener.AddTween(pacStudent.transform, pacStudent.transform.position, bottomRight, 1.5f);
+                    movementTarget = pacStudent.transform.position + Vector3.down;
                     animator.Play("Down");
                 }
                 if (lastInput == KeyCode.A)
                 {
-                    tweener.AddTween(pacStudent.transform, pacStudent.transform.position, bottomLeft, 1.5f);
+                     movementTarget = pacStudent.transform.position + Vector3.left;
                     animator.Play("Left");
                 }
                 if (lastInput == KeyCode.W)
                 {
-                    tweener.AddTween(pacStudent.transform, pacStudent.transform.position, topLeft, 1.5f);
+                        movementTarget = pacStudent.transform.position + Vector3.up;
                     animator.Play("Up");
                 }
-    }
 
-}
+        tweener.AddTween(pacStudent.transform, pacStudent.transform.position, movementTarget, 0.5f);                                
+    }
+} 

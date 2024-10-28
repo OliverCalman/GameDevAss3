@@ -2198,10 +2198,10 @@ GameObject:
   m_Component:
   - component: {fileID: 765510690}
   - component: {fileID: 765510689}
-  - component: {fileID: 765510691}
-  - component: {fileID: 765510693}
   - component: {fileID: 765510694}
+  - component: {fileID: 765510691}
   - component: {fileID: 765510695}
+  - component: {fileID: 765510693}
   m_Layer: 0
   m_Name: PacStudent
   m_TagString: Player
@@ -2297,7 +2297,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 765510687}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d12a84801f80342c7a586a815f7ce39a, type: 3}
