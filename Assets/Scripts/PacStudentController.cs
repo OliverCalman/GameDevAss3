@@ -33,7 +33,8 @@ public class PacStudentController : MonoBehaviour
                 lastInput = KeyCode.S;
             if(Input.GetKeyDown(KeyCode.D))
                 lastInput = KeyCode.D;
-            
+
+            //check for an in input to start game
             if (lastInput != KeyCode.None)
             {
                 MovementHandler();
