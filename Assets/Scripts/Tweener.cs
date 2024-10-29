@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Tweener : MonoBehaviour {
-    private Tween activeTween;
+    public Tween activeTween { get; private set; }
     void Start() 
     {
 

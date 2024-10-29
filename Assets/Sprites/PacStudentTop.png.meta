@@ -106,12 +106,12 @@ TextureImporter:
       name: PacStudentTop_0
       rect:
         serializedVersion: 2
-        x: 49
-        y: 21
-        width: 30
-        height: 92
+        x: 0
+        y: 128
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -127,12 +127,12 @@ TextureImporter:
       name: PacStudentTop_1
       rect:
         serializedVersion: 2
-        x: 177
-        y: 21
-        width: 29
-        height: 91
+        x: 0
+        y: 0
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
