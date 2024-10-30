@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2773109891187881427}
   - component: {fileID: 6020727650749043669}
   m_Layer: 0
-  m_Name: 6
-  m_TagString: Untagged
+  m_Name: PowerPellet
+  m_TagString: PowerPellet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

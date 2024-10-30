@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Tilemap
+  - BonusScore
+  - Pellet
+  - PowerPellet
+  - Ghost
   layers:
   - Default
   - TransparentFX
