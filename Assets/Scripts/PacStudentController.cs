@@ -17,14 +17,18 @@ public class PacStudentController : MonoBehaviour
     private KeyCode currentInput;
     private KeyCode lastInput;
     private Vector3 movementTarget;
-    private String animDirection;
+    private string animDirection;
+    private ParticleSystem footsteps;
+    private AudioSource walkAudio;
     // Start is called before the first frame update
     void Start()
     {
         //assign tweener, animator, and world maps
         tweener = GetComponent<Tweener>();
         animator = GetComponent<Animator>();
+        walkAudio = GetComponent<AudioSource>();
         tilemap = GameObject.FindWithTag("Tilemap").GetComponent<Tilemap>();
+        footsteps = GameObject.Find("Footsteps").GetComponent<ParticleSystem>();
         //reset pacstudents position
         pacStudent.transform.position = startPosition;
     }
@@ -70,19 +74,19 @@ public class PacStudentController : MonoBehaviour
         if (CollisionDetector(lastInput) == false)
         {
             currentInput = lastInput;
+            MovementAnimator();
 
-            tweener.AddTween(pacStudent.transform, pacStudent.transform.position, movementTarget, 0.5f);  
-            
-            //AnimationHandler(lastInput);
-            animator.Play(animDirection);
         }
         else if (CollisionDetector(currentInput) == false) //if currentmovement is valid then move once able
         {
-            tweener.AddTween(pacStudent.transform, pacStudent.transform.position, movementTarget, 0.5f);  
-            //AnimationHandler(currentInput);
-            animator.Play(animDirection);
+            MovementAnimator();
         }
-        //unhandled condition results in stopping when wall is hit
+        else //stop animating, stop footstep sound and stop particle system
+        {
+            footsteps.Stop();
+            walkAudio.Stop();
+            animator.enabled = false; 
+        }
                                 
     }
     public bool CollisionDetector(KeyCode input)
@@ -116,5 +120,13 @@ public class PacStudentController : MonoBehaviour
         {
             return false;
         }
+    }
+    public void MovementAnimator()
+    {
+            tweener.AddTween(pacStudent.transform, pacStudent.transform.position, movementTarget, 0.5f);  
+            animator.enabled = true;   
+            animator.Play(animDirection);
+            footsteps.Play();
+            walkAudio.Play();
     }
 } 
