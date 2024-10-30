@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1651247641799379420}
   - component: {fileID: 8613015646399390227}
   - component: {fileID: 426829625683486592}
-  - component: {fileID: 3806061114701950806}
   m_Layer: 0
   m_Name: BonusPellet
   m_TagString: BonusScore
@@ -28,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 5327617309099029687}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.422678, y: 4.1727486, z: 0}
+  m_LocalPosition: {x: 0, y: -5, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -110,15 +109,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3806061114701950806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5327617309099029687}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78342120a125c43f6a515d86d041c328, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
