@@ -209,6 +209,8 @@ GameObject:
   - component: {fileID: 148176865}
   - component: {fileID: 148176864}
   - component: {fileID: 148176863}
+  - component: {fileID: 148176867}
+  - component: {fileID: 148176866}
   m_Layer: 0
   m_Name: Cherry
   m_TagString: BonusScore
@@ -301,12 +303,37 @@ Transform:
   m_GameObject: {fileID: 148176862}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.98, y: 9.87, z: 0.034568638}
+  m_LocalPosition: {x: 3.04, y: 9.46, z: 0.034568638}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &148176866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148176862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78342120a125c43f6a515d86d041c328, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &148176867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148176862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42479926e12c0465c9d5df4f81279175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cherry: {fileID: 148176862}
 --- !u!1 &177725383
 GameObject:
   m_ObjectHideFlags: 0
