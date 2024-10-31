@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class PacStudentController : MonoBehaviour
 {
     [SerializeField] private GameObject pacStudent;
     private Tweener tweener;
+    private GameController gameController;
     private Animator animator;
     private Tilemap tilemap;
     private Vector3 startPosition = new Vector3(-3.5f,6.5f,0.0f);
@@ -20,11 +22,16 @@ public class PacStudentController : MonoBehaviour
     private string animDirection;
     private ParticleSystem footsteps;
     private AudioSource walkAudio;
+  //  private AudioClip eatAudio;
+   // private AudioClip footstepsAudio;
+   // private AudioClip deathAudio;
     // Start is called before the first frame update
     void Start()
     {
         //assign tweener, animator, and world maps
         tweener = GetComponent<Tweener>();
+        //gameController = GetComponent<GameController>();
+        gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
         animator = GetComponent<Animator>();
         walkAudio = GetComponent<AudioSource>();
         tilemap = GameObject.FindWithTag("Tilemap").GetComponent<Tilemap>();
@@ -71,13 +78,13 @@ public class PacStudentController : MonoBehaviour
     public void MovementHandler(KeyCode input)
     {
         //if lastinput is a valid movement, move and assign to current input. 
-        if (CollisionDetector(lastInput) == false)
+        if (MovementValidator(lastInput) == false)
         {
             currentInput = lastInput;
             MovementAnimator();
 
         }
-        else if (CollisionDetector(currentInput) == false) //if currentmovement is valid then move once able
+        else if (MovementValidator(currentInput) == false) //if currentmovement is valid then move once able
         {
             MovementAnimator();
         }
@@ -89,7 +96,7 @@ public class PacStudentController : MonoBehaviour
         }
                                 
     }
-    public bool CollisionDetector(KeyCode input)
+    public bool MovementValidator(KeyCode input)
     {
         //get movement target based on input and assign correct animation to be used in movementhandler
         switch(input)
@@ -128,5 +135,48 @@ public class PacStudentController : MonoBehaviour
             animator.Play(animDirection);
             footsteps.Play();
             walkAudio.Play();
+    }
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        Debug.Log("Collided with " + collider.tag);
+        switch (collider.tag)
+        {
+            case "Pellet":
+                Destroy(collider.gameObject);
+                //play eating sound
+               // audioSource.PlayOneShot(eatAudio,1f);
+                //add 10 to score
+                gameController.KeepScore(10);
+                break;
+            case "PowerPellet":
+                Destroy(collider.gameObject);
+                //play eating sound
+                //trigger scared state coroutine
+                break;
+            case "BonusScore":
+                Destroy(collider.gameObject);
+                //if cherry is moving then stop invoking tweener
+                //CherryController.tweener = null;
+                //add 100 to score
+                gameController.KeepScore(100);
+                break;
+            case "Ghost":
+                //check not in scared state. If scared then kill ghos
+               // if (isScared == true)
+               // {
+                    //change ghost to death and lerp back to mapCentre (9f,-6.5f,0f) OR start point for that particular ghost
+                //}
+                //kill the player
+                //play death animation
+                //pause movement of ghosts or destroy them
+                //pause cherry
+                //remove a life
+                break;
+        }
+    }
+    private void Respawn()
+    {
+        //respawn if player still has health at start position
+        //reset ghosts back to starting position
     }
 } 

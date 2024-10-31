@@ -29,7 +29,7 @@ public class Tweener : MonoBehaviour {
 
     public void AddTween(Transform target, Vector3 startPos, Vector3 endPos, float duration)
     {
-        activeTween = new Tween(target, startPos, endPos, Time.time, duration);
+            activeTween = new Tween(target, startPos, endPos, Time.time, duration);
     }
 
 }

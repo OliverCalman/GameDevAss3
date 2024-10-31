@@ -17,7 +17,6 @@ public class CherryController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //just in case, destroy the existing cherry
         tweener = GetComponent<Tweener>();
         StartCoroutine(CherryTimer());
     }
@@ -35,8 +34,6 @@ public class CherryController : MonoBehaviour
             CreateCherry();
 
             tweener.AddTween(thisCherry.transform, thisCherry.transform.position, movementTarget, 5f); 
-
-
         }
 
     }
