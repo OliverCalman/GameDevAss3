@@ -7,6 +7,7 @@ public class AudioManager : MonoBehaviour
 {
     public AudioClip Intro;
     public AudioClip GhostNormalState;
+    public AudioClip scaredGhost;
     public AudioSource audioSource;
 
     // Start is called before the first frame update
@@ -28,5 +29,21 @@ public class AudioManager : MonoBehaviour
     void Update()
     {
         
+    }
+    public void ScareGhosts()
+    {
+        StartCoroutine(ScaredTimer());
+    }
+    private IEnumerator ScaredTimer()
+    {
+        audioSource.Stop();
+        audioSource.clip = scaredGhost;
+        audioSource.Play();
+        audioSource.loop = true;
+        yield return new WaitForSeconds(10f);
+        audioSource.Stop();
+        audioSource.clip = GhostNormalState;
+        audioSource.Play();
+        audioSource.loop = true;
     }
 }

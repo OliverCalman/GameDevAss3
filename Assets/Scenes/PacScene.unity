@@ -1816,9 +1816,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 255045223
+  m_SortingLayer: 1
+  m_SortingOrder: 1
   m_Sprite: {fileID: -7090179112662265371, guid: be3b28377dd9346b9a6ad0f70d334996, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -12806,6 +12806,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f2970d17bbf48b6a82d6ce1ab109f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioManager: {fileID: 2000171284}
   scoreUI: {fileID: 1797636170}
   fearTimerUI: {fileID: 663021674}
   gameTimerUI: {fileID: 1706318294}
@@ -18996,7 +18997,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2000171284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19011,6 +19012,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Intro: {fileID: 8300000, guid: 4a8e7ce04ce81461397e77b9e408e33a, type: 3}
   GhostNormalState: {fileID: 8300000, guid: 889ed75a80c664d7da7c65cd798ceae4, type: 3}
+  scaredGhost: {fileID: 8300000, guid: 30868f6e77561435aa620dbe61b0b353, type: 3}
   audioSource: {fileID: 2000171285}
 --- !u!82 &2000171285
 AudioSource:
@@ -19027,7 +19029,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 0.5
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

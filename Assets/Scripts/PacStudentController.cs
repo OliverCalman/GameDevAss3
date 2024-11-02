@@ -226,18 +226,16 @@ public class PacStudentController : MonoBehaviour
         dead = true;
         //kill the player
         audioSource.Stop();
-        audioSource.PlayOneShot(deathAudio,1f);
+        audioSource.clip = deathAudio;
+        audioSource.Play();
         //play death animation
         animator.Play("Dead");
         deathAcid.Play();
-        animator.speed = 1f;
         currentInput = KeyCode.None;
         lastInput = KeyCode.None;  
         movementTarget = startPosition; 
         //pause movement of ghosts or destroy them
-        Respawn();
-        //pause cherry
-        //remove a life        
+        Respawn();       
     }
     private void Respawn()
     {
@@ -249,7 +247,7 @@ public class PacStudentController : MonoBehaviour
     }
     private IEnumerator respawnWait()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         pacStudent.transform.position = startPosition;
         dead = false;
     }
