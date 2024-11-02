@@ -9,6 +9,8 @@ TagManager:
   - Pellet
   - PowerPellet
   - Ghost
+  - RightTeleporter
+  - LeftTeleporter
   layers:
   - Default
   - TransparentFX

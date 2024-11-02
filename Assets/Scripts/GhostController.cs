@@ -16,13 +16,20 @@ public class GhostController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      if (gameController.scaredState == true)
+      if (gameController.scaredState == true && gameController.recoveryState == false)
       {
-        StartCoroutine(IsTerrified());
+        //StartCoroutine(IsTerrified());
+        animator.Play("Scared");
+      }
+      else if (gameController.scaredState == true && gameController.recoveryState == true)
+      {
+        animator.Play("Recovering");
       }
     }
     IEnumerator IsTerrified()
     {
+        //make sure that setting the animation and state here does NOT affect dead ghosts
+        //if ghost == alive only
         //set animation as scared
         animator.Play("Scared");
         yield return new WaitForSeconds(7f);
@@ -30,6 +37,6 @@ public class GhostController : MonoBehaviour
         animator.Play("Recovering");
         yield return new WaitForSeconds(3f);
         //return animation to normal state
-        animator.Play("Left");
+        animator.Play("Right");
     }
 }

@@ -18,6 +18,7 @@ public class PacStudentController : MonoBehaviour
     private bool tilemapCollision;
     [SerializeField] private ParticleSystem footsteps;
     [SerializeField] private ParticleSystem tilemapCollisionParticle;
+    [SerializeField] private ParticleSystem deathAcid;
     private Vector3 startPosition = new Vector3(-3.5f,6.5f,0.0f);
     private KeyCode currentInput;
     private KeyCode lastInput;
@@ -30,10 +31,10 @@ public class PacStudentController : MonoBehaviour
     [SerializeField] private AudioClip collisionAudio;
     [SerializeField] private AudioClip deadGhost; 
 
-
     // Start is called before the first frame update
     void Start()
     {
+        //gameController.PauseGameTimer();
         //assign tweener, animator, and world maps
         tweener = GetComponent<Tweener>();
         //gameController = GetComponent<GameController>();
@@ -43,10 +44,10 @@ public class PacStudentController : MonoBehaviour
         tilemap = GameObject.FindWithTag("Tilemap").GetComponent<Tilemap>();
         footsteps.GetComponent<ParticleSystem>();
         tilemapCollisionParticle.GetComponent<ParticleSystem>();
+        deathAcid.GetComponent<ParticleSystem>();
         //reset pacstudents position
         pacStudent.transform.position = startPosition;
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -60,7 +61,6 @@ public class PacStudentController : MonoBehaviour
                MovementHandler(lastInput);
             }
     }
-
     public void GetInput()
     {
         //get current keycode and assign it to lastinput
@@ -81,7 +81,6 @@ public class PacStudentController : MonoBehaviour
                 lastInput = KeyCode.D;
             }
     }
-
     public void MovementHandler(KeyCode input)
     {
         //if lastinput is a valid movement, move and assign to current input. 
@@ -154,10 +153,17 @@ public class PacStudentController : MonoBehaviour
         Debug.Log("Collided with " + collider.tag);
         switch (collider.tag)
         {
-            case "Tilemap":
-                //play collision sound
-                //audioSource.Stop();
-                //audioSource.PlayOneShot(collisionAudio,1f);
+            case "LeftTeleporter":
+                //teleport to right teleporter position and continue moving
+                    movementTarget = new Vector3(22.5f,-6.5f,0);
+                    pacStudent.transform.position = movementTarget;
+                    MovementAnimator();
+                break;
+            case "RightTeleporter":
+                //teleport to left teleporter position and continue moving
+                    movementTarget = new Vector3(-4.5f,-6.5f,0);
+                    pacStudent.transform.position = movementTarget;
+                    MovementAnimator();
                 break;
             case "Pellet":
                 Destroy(collider.gameObject);
@@ -201,7 +207,10 @@ public class PacStudentController : MonoBehaviour
                     audioSource.Stop();
                     audioSource.PlayOneShot(deathAudio,1f);
                     //play death animation
+                    deathAcid.Play();
+                    animator.Play("Dead");
                     //pause movement of ghosts or destroy them
+                    Respawn();
                     //pause cherry
                     //remove a life
                 }
@@ -210,7 +219,17 @@ public class PacStudentController : MonoBehaviour
     }
     private void Respawn()
     {
+        gameController.RemoveLife();
         //respawn if player still has health at start position
+        tweener.activeTween = null;
+        animator.Play("Dead");
+        StartCoroutine(respawnWait());
         //reset ghosts back to starting position
+    }
+    private IEnumerator respawnWait()
+    {
+        gameController.PauseGameTimer();
+        yield return new WaitForSeconds(2f);
+        pacStudent.transform.position = startPosition;
     }
 } 
