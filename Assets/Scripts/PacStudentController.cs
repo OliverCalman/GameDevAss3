@@ -19,7 +19,7 @@ public class PacStudentController : MonoBehaviour
     [SerializeField] private ParticleSystem footsteps;
     [SerializeField] private ParticleSystem tilemapCollisionParticle;
     [SerializeField] private ParticleSystem deathAcid;
-    private Vector3 startPosition = new Vector3(-3.5f,6.5f,0.0f);
+    private Vector3 startPosition = new Vector3(-3.5f,6.5f,0.1f);
     private KeyCode currentInput;
     private KeyCode lastInput;
     private Vector3 movementTarget;
@@ -30,6 +30,7 @@ public class PacStudentController : MonoBehaviour
     [SerializeField] private AudioClip deathAudio;
     [SerializeField] private AudioClip collisionAudio;
     [SerializeField] private AudioClip deadGhost; 
+    private bool dead;
 
     // Start is called before the first frame update
     void Start()
@@ -95,7 +96,7 @@ public class PacStudentController : MonoBehaviour
         {
             MovementAnimator();
         }
-        else if (tilemapCollision == false)//stop animating, stop all other sounds except the bump and stop walk particle system
+        else if (tilemapCollision == false && lastInput != KeyCode.None)//stop animating, stop all other sounds except the bump and stop walk particle system
         {
             tilemapCollision = true;
             footsteps.Stop();
@@ -108,45 +109,54 @@ public class PacStudentController : MonoBehaviour
     }
     public bool MovementValidator(KeyCode input)
     {
-        //get movement target based on input and assign correct animation to be used in movementhandler
-        switch(input)
+        if (dead == false)
+        {   
+            //get movement target based on input and assign correct animation to be used in movementhandler
+            switch(input)
+            {
+                case KeyCode.W:
+                    movementTarget = pacStudent.transform.position + Vector3.up;
+                    animDirection = "Up";    
+                    break;
+                case KeyCode.A:
+                    movementTarget = pacStudent.transform.position + Vector3.left;
+                    animDirection = "Left";  
+                    break;
+                case KeyCode.S:
+                    movementTarget = pacStudent.transform.position + Vector3.down;
+                    animDirection = "Down";  
+                    break;
+                case KeyCode.D:
+                    movementTarget = pacStudent.transform.position + Vector3.right;
+                    animDirection = "Right";  
+                    break;
+            }
+            //if colliding with tile return true
+            if (tilemap.GetTile<Tile>(tilemap.WorldToCell(movementTarget)) != null)
+            {
+                return true;
+            }
+            else
+            {
+                tilemapCollision = false;
+                return false;
+            }
+        } else
         {
-            case KeyCode.W:
-                movementTarget = pacStudent.transform.position + Vector3.up;
-                animDirection = "Up";    
-                break;
-            case KeyCode.A:
-                movementTarget = pacStudent.transform.position + Vector3.left;
-                animDirection = "Left";  
-                break;
-            case KeyCode.S:
-                movementTarget = pacStudent.transform.position + Vector3.down;
-                animDirection = "Down";  
-                break;
-            case KeyCode.D:
-                movementTarget = pacStudent.transform.position + Vector3.right;
-                animDirection = "Right";  
-                break;
-        }
-        //if colliding with tile return true
-        if (tilemap.GetTile<Tile>(tilemap.WorldToCell(movementTarget)) != null)
-        {
-            return true;
-        }
-        else
-        {
-            tilemapCollision = false;
             return false;
         }
     }
     public void MovementAnimator()
     {
            // audioSource.Stop();
+        if (dead == false)
+        {
             tweener.AddTween(pacStudent.transform, pacStudent.transform.position, movementTarget, 0.4f);  
             animator.enabled = true;   
             animator.Play(animDirection);
             audioSource.PlayOneShot(footstepsAudio,1f);
             footsteps.Play();
+        }
     }
     void OnTriggerEnter2D(Collider2D collider)
     {
@@ -205,28 +215,35 @@ public class PacStudentController : MonoBehaviour
                 }
                 else if (gameController.scaredState == false)
                 {
-                    //kill the player
-                    audioSource.Stop();
-                    audioSource.PlayOneShot(deathAudio,1f);
-                    //play death animation
-                    deathAcid.Play();
-                    //pause movement of ghosts or destroy them
-                    Respawn();
-                    //pause cherry
-                    //remove a life
+                    YouDied();
                 }
                 break;
         }
+    }
+    private void YouDied()
+    {
+        Debug.Log("You Died");
+        dead = true;
+        //kill the player
+        audioSource.Stop();
+        audioSource.PlayOneShot(deathAudio,1f);
+        //play death animation
+        animator.Play("Dead");
+        deathAcid.Play();
+        animator.speed = 1f;
+        currentInput = KeyCode.None;
+        lastInput = KeyCode.None;  
+        movementTarget = startPosition; 
+        //pause movement of ghosts or destroy them
+        Respawn();
+        //pause cherry
+        //remove a life        
     }
     private void Respawn()
     {
         gameController.RemoveLife();
         //respawn if player still has health at start position
-        tweener.activeTween = null;
-        currentInput = KeyCode.None;
-        lastInput = KeyCode.None;
-        animator.enabled = true;   
-        animator.Play("Dead");
+        //animator.enabled = true;   
         StartCoroutine(respawnWait());
         //reset ghosts back to starting position
     }
@@ -234,5 +251,6 @@ public class PacStudentController : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         pacStudent.transform.position = startPosition;
+        dead = false;
     }
 } 
