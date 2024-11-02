@@ -102,7 +102,7 @@ public class PacStudentController : MonoBehaviour
             footsteps.Stop();
             audioSource.PlayOneShot(collisionAudio,1f);
             animator.enabled = false; 
-            tilemapCollisionParticle.transform.position = (transform.position + movementTarget)/2;
+            tilemapCollisionParticle.transform.position = 0.5f * (transform.position + movementTarget);
             tilemapCollisionParticle.Play();
         }
                                 
