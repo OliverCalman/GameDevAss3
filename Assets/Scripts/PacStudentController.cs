@@ -15,16 +15,22 @@ public class PacStudentController : MonoBehaviour
     private GameController gameController;
     private Animator animator;
     private Tilemap tilemap;
+    private bool tilemapCollision;
+    [SerializeField] private ParticleSystem footsteps;
+    [SerializeField] private ParticleSystem tilemapCollisionParticle;
     private Vector3 startPosition = new Vector3(-3.5f,6.5f,0.0f);
     private KeyCode currentInput;
     private KeyCode lastInput;
     private Vector3 movementTarget;
     private string animDirection;
-    private ParticleSystem footsteps;
-    private AudioSource walkAudio;
-  //  private AudioClip eatAudio;
-   // private AudioClip footstepsAudio;
-   // private AudioClip deathAudio;
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip eatAudio;
+    [SerializeField] private AudioClip footstepsAudio;
+    [SerializeField] private AudioClip deathAudio;
+    [SerializeField] private AudioClip collisionAudio;
+    [SerializeField] private AudioClip deadGhost; 
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,9 +39,10 @@ public class PacStudentController : MonoBehaviour
         //gameController = GetComponent<GameController>();
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
         animator = GetComponent<Animator>();
-        walkAudio = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
         tilemap = GameObject.FindWithTag("Tilemap").GetComponent<Tilemap>();
-        footsteps = GameObject.Find("Footsteps").GetComponent<ParticleSystem>();
+        footsteps.GetComponent<ParticleSystem>();
+        tilemapCollisionParticle.GetComponent<ParticleSystem>();
         //reset pacstudents position
         pacStudent.transform.position = startPosition;
     }
@@ -82,17 +89,21 @@ public class PacStudentController : MonoBehaviour
         {
             currentInput = lastInput;
             MovementAnimator();
+            gameController.StartGameTimer();
 
         }
         else if (MovementValidator(currentInput) == false) //if currentmovement is valid then move once able
         {
             MovementAnimator();
         }
-        else //stop animating, stop footstep sound and stop particle system
+        else if (tilemapCollision == false)//stop animating, stop all other sounds except the bump and stop walk particle system
         {
+            tilemapCollision = true;
             footsteps.Stop();
-            walkAudio.Stop();
+            audioSource.PlayOneShot(collisionAudio,1f);
             animator.enabled = false; 
+            tilemapCollisionParticle.transform.position = (movementTarget + transform.position)/2;
+            tilemapCollisionParticle.Play();
         }
                                 
     }
@@ -125,52 +136,75 @@ public class PacStudentController : MonoBehaviour
         }
         else
         {
+            tilemapCollision = false;
             return false;
         }
     }
     public void MovementAnimator()
     {
-            tweener.AddTween(pacStudent.transform, pacStudent.transform.position, movementTarget, 0.5f);  
+           // audioSource.Stop();
+            tweener.AddTween(pacStudent.transform, pacStudent.transform.position, movementTarget, 0.4f);  
             animator.enabled = true;   
             animator.Play(animDirection);
+            audioSource.PlayOneShot(footstepsAudio,1f);
             footsteps.Play();
-            walkAudio.Play();
     }
     void OnTriggerEnter2D(Collider2D collider)
     {
         Debug.Log("Collided with " + collider.tag);
         switch (collider.tag)
         {
+            case "Tilemap":
+                //play collision sound
+                //audioSource.Stop();
+                //audioSource.PlayOneShot(collisionAudio,1f);
+                break;
             case "Pellet":
                 Destroy(collider.gameObject);
                 //play eating sound
-               // audioSource.PlayOneShot(eatAudio,1f);
+                audioSource.Stop();
+                audioSource.PlayOneShot(eatAudio,1f);
                 //add 10 to score
                 gameController.KeepScore(10);
                 break;
             case "PowerPellet":
                 Destroy(collider.gameObject);
                 //play eating sound
+                audioSource.Stop();
+                audioSource.PlayOneShot(eatAudio,1f);
                 //trigger scared state coroutine
+                gameController.ScareGhosts();
                 break;
             case "BonusScore":
                 Destroy(collider.gameObject);
                 //if cherry is moving then stop invoking tweener
                 //CherryController.tweener = null;
+                audioSource.Stop();
+                audioSource.PlayOneShot(eatAudio,1f);
                 //add 100 to score
                 gameController.KeepScore(100);
                 break;
             case "Ghost":
                 //check not in scared state. If scared then kill ghos
-               // if (isScared == true)
-               // {
-                    //change ghost to death and lerp back to mapCentre (9f,-6.5f,0f) OR start point for that particular ghost
-                //}
-                //kill the player
-                //play death animation
-                //pause movement of ghosts or destroy them
-                //pause cherry
-                //remove a life
+                if (gameController.scaredState == true)
+                {
+                    audioSource.Stop();
+                    audioSource.PlayOneShot(deadGhost,1f);
+                    //change ghost to death and lerp back to mapCentre (9f,-6.5f,0f) 
+                    //if ghost is alive (don't score off an already dead ghost!)
+                    gameController.KeepScore(300);
+                    collider.transform.position = new Vector3(9f,-6.5f,0f);
+                }
+                else if (gameController.scaredState == false)
+                {
+                    //kill the player
+                    audioSource.Stop();
+                    audioSource.PlayOneShot(deathAudio,1f);
+                    //play death animation
+                    //pause movement of ghosts or destroy them
+                    //pause cherry
+                    //remove a life
+                }
                 break;
         }
     }
