@@ -25,7 +25,6 @@ public class GameController : MonoBehaviour
         //nullify the scared timer to remove it
         fearTimerUI.GetComponent<Text>().text = null;
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -48,7 +47,6 @@ public class GameController : MonoBehaviour
         //check if game is over
         GameOver();
     }
-
     public void KeepScore(int addScore)
     {
         //update current score
@@ -56,9 +54,13 @@ public class GameController : MonoBehaviour
         //display on UI
         scoreUI.GetComponent<Text>().text = "Score: " + score;
     }
+    public void RemovePellet()
+    {
+        pelletCount--;
+    }
     public void RemoveLife()
     {
-        lives = lives -1;
+        lives--;
         switch (lives)
         {
             //double destruction just to be safe...
@@ -84,10 +86,10 @@ public class GameController : MonoBehaviour
     {
         Time.timeScale = 1.0f;
     }
-    public void PauseGameTimer()
+    /*public void PauseGameTimer()
     {
         Time.timeScale = 0.0f;
-    }
+    }*/
     public void ScareGhosts()
     {
        StartCoroutine(ScaredTimer());

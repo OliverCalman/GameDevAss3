@@ -167,6 +167,7 @@ public class PacStudentController : MonoBehaviour
                 break;
             case "Pellet":
                 Destroy(collider.gameObject);
+                gameController.RemovePellet();
                 //play eating sound
                 audioSource.Stop();
                 audioSource.PlayOneShot(eatAudio,1f);
@@ -175,6 +176,7 @@ public class PacStudentController : MonoBehaviour
                 break;
             case "PowerPellet":
                 Destroy(collider.gameObject);
+                gameController.RemovePellet();
                 //play eating sound
                 audioSource.Stop();
                 audioSource.PlayOneShot(eatAudio,1f);
@@ -208,7 +210,6 @@ public class PacStudentController : MonoBehaviour
                     audioSource.PlayOneShot(deathAudio,1f);
                     //play death animation
                     deathAcid.Play();
-                    animator.Play("Dead");
                     //pause movement of ghosts or destroy them
                     Respawn();
                     //pause cherry
@@ -222,13 +223,15 @@ public class PacStudentController : MonoBehaviour
         gameController.RemoveLife();
         //respawn if player still has health at start position
         tweener.activeTween = null;
+        currentInput = KeyCode.None;
+        lastInput = KeyCode.None;
+        animator.enabled = true;   
         animator.Play("Dead");
         StartCoroutine(respawnWait());
         //reset ghosts back to starting position
     }
     private IEnumerator respawnWait()
     {
-        gameController.PauseGameTimer();
         yield return new WaitForSeconds(2f);
         pacStudent.transform.position = startPosition;
     }
