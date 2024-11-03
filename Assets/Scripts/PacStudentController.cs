@@ -56,10 +56,10 @@ public class PacStudentController : MonoBehaviour
             GetInput();
 
             //check pacstudent is not lerping
-            if (tweener.activeTween == null)
+            if (tweener.activeTween == null) 
             {
                 //pass input and attempt movement
-               MovementHandler(lastInput);
+                MovementHandler(lastInput);
             }
     }
     public void GetInput()
@@ -89,14 +89,13 @@ public class PacStudentController : MonoBehaviour
         {
             currentInput = lastInput;
             MovementAnimator();
-            gameController.StartGameTimer();
 
         }
         else if (MovementValidator(currentInput) == false) //if currentmovement is valid then move once able
         {
             MovementAnimator();
         }
-        else if (tilemapCollision == false && lastInput != KeyCode.None)//stop animating, stop all other sounds except the bump and stop walk particle system
+        else if (tilemapCollision == false && lastInput != KeyCode.None && dead == false)//stop animating, stop all other sounds except the bump and stop walk particle system
         {
             tilemapCollision = true;
             footsteps.Stop();
@@ -105,6 +104,10 @@ public class PacStudentController : MonoBehaviour
             tilemapCollisionParticle.transform.position = 0.5f * (transform.position + movementTarget);
             tilemapCollisionParticle.Play();
         }
+     /*   else if (tilemapCollision == true && dead == true)
+        {
+            tweener.activeTween = null;
+        } */
                                 
     }
     public bool MovementValidator(KeyCode input)
@@ -134,6 +137,7 @@ public class PacStudentController : MonoBehaviour
             //if colliding with tile return true
             if (tilemap.GetTile<Tile>(tilemap.WorldToCell(movementTarget)) != null)
             {
+                tilemapCollision = true;
                 return true;
             }
             else
@@ -165,15 +169,15 @@ public class PacStudentController : MonoBehaviour
         {
             case "LeftTeleporter":
                 //teleport to right teleporter position and continue moving
-                    movementTarget = new Vector3(22.5f,-6.5f,0);
-                    pacStudent.transform.position = movementTarget;
-                    MovementAnimator();
+                movementTarget = new Vector3(22.5f,-6.5f,0);
+                pacStudent.transform.position = movementTarget;
+                MovementAnimator();
                 break;
             case "RightTeleporter":
                 //teleport to left teleporter position and continue moving
-                    movementTarget = new Vector3(-4.5f,-6.5f,0);
-                    pacStudent.transform.position = movementTarget;
-                    MovementAnimator();
+                movementTarget = new Vector3(-4.5f,-6.5f,0);
+                pacStudent.transform.position = movementTarget;
+                MovementAnimator();
                 break;
             case "Pellet":
                 Destroy(collider.gameObject);
@@ -226,14 +230,11 @@ public class PacStudentController : MonoBehaviour
         dead = true;
         //kill the player
         audioSource.Stop();
-        audioSource.clip = deathAudio;
-        audioSource.Play();
+        //audioSource.clip = deathAudio;
+        audioSource.PlayOneShot(deathAudio,1f);
         //play death animation
         animator.Play("Dead");
         deathAcid.Play();
-        currentInput = KeyCode.None;
-        lastInput = KeyCode.None;  
-        movementTarget = startPosition; 
         //pause movement of ghosts or destroy them
         Respawn();       
     }
@@ -247,8 +248,13 @@ public class PacStudentController : MonoBehaviour
     }
     private IEnumerator respawnWait()
     {
+        currentInput = KeyCode.None;
+        lastInput = KeyCode.None;  
         yield return new WaitForSeconds(1.5f);
+        animator.Play("Right");
+        movementTarget = startPosition; 
         pacStudent.transform.position = startPosition;
-        dead = false;
+        //tweener.activeTween = null;
+        //dead = false;
     }
 } 

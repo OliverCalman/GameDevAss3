@@ -88,10 +88,10 @@ public class GameController : MonoBehaviour
     {
         Time.timeScale = 1.0f;
     }
-    /*public void PauseGameTimer()
+    public void PauseGameTimer()
     {
         Time.timeScale = 0.0f;
-    }*/
+    }
     public void ScareGhosts()
     {
        StartCoroutine(ScaredTimer());
