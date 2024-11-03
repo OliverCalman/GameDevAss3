@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] private AudioManager audioManager;
     [SerializeField] private GameObject scoreUI;
     private int score = 0;
     [SerializeField] private GameObject fearTimerUI;
@@ -25,7 +24,6 @@ public class GameController : MonoBehaviour
     {
         //nullify the scared timer to remove it
         fearTimerUI.GetComponent<Text>().text = null;
-        audioManager.GetComponent<AudioManager>();
     }
     // Update is called once per frame
     void Update()
@@ -88,10 +86,10 @@ public class GameController : MonoBehaviour
     {
         Time.timeScale = 1.0f;
     }
-    public void PauseGameTimer()
+    /*public void PauseGameTimer()
     {
         Time.timeScale = 0.0f;
-    }
+    }*/
     public void ScareGhosts()
     {
        StartCoroutine(ScaredTimer());
@@ -99,7 +97,6 @@ public class GameController : MonoBehaviour
     }
     IEnumerator ScaredTimer()
     {
-        audioManager.ScareGhosts();
         //set scared state for 10 seconds
         Debug.Log("scared state");
         scaredState = true;
