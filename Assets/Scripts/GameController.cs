@@ -19,11 +19,13 @@ public class GameController : MonoBehaviour
     public bool scaredState {get; private set;} 
     public bool recoveryState {get; private set;} 
     public int pelletCount = 224;
+    [SerializeField] private AudioManager audioManager;
     // Start is called before the first frame update
     void Start()
     {
         //nullify the scared timer to remove it
         fearTimerUI.GetComponent<Text>().text = null;
+        audioManager = GetComponent<AudioManager>();
     }
     // Update is called once per frame
     void Update()
@@ -92,6 +94,7 @@ public class GameController : MonoBehaviour
     }*/
     public void ScareGhosts()
     {
+        audioManager.ScareGhosts();
        StartCoroutine(ScaredTimer());
        scaredState = true;
     }
